@@ -17,6 +17,7 @@ import IconJavaScriptSVG from '../public/icon-javascript.svg';
 import IconJSONSVG from '../public/icon-json.svg';
 
 import css from './style.module.css';
+import getFileContent from '../utils/fileUtil';
 
 const TYPE_TO_ICON = {
   'text/plain': IconPlaintextSVG,
@@ -77,14 +78,20 @@ FilesTable.propTypes = {
   setActiveFile: PropTypes.func
 };
 
-function Previewer({ file }) {
-  const [value, setValue] = useState('');
+function EditFile() {
+  
 
-  useEffect(() => {
-    (async () => {
-      setValue(await file.text());
-    })();
-  }, [file]);
+}
+
+function Previewer({ file }) {
+  const [value] = getFileContent(file);
+
+  // TODO: Remove Later
+//   useEffect(() => {
+//     (async () => {
+//       setValue(await file.text());
+//     })();
+//   }, [file]);
 
   return (
     <div className={css.preview}>

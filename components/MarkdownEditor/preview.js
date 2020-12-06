@@ -1,21 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ReactMarkdown from 'react-markdown';
 
 import css from './style.css';
+import getFileContent from '../../utils/fileUtil';
 
-function MarkdownEditor({ file, write }) {
-  console.log(file, write);
+function MarkdownPreview({ file }) {
+  const [fileContent] = getFileContent(file);
+
+  console.log(`MD Preview: ${file}`);
   return (
     <div className={css.editor}>
-      <h3>TODO</h3>
-      <i>text/markdown</i>
+      <ReactMarkdown source={fileContent} />
     </div>
   );
 }
 
-MarkdownEditor.propTypes = {
+MarkdownPreview.propTypes = {
   file: PropTypes.object,
   write: PropTypes.func
 };
 
-export default MarkdownEditor;
+export default MarkdownPreview;
