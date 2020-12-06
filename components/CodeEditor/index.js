@@ -1,20 +1,31 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import PropTypes from 'prop-types';
 import AceEditor from 'react-ace';
+import { getFileContent, getFileName } from "../../utils/fileUtil";
 
 import css from './style.css';
-import { fileUtil } from '../../utils';
 
-function CodeEditor({ file, write }) {
+function CodeEditor({ isPreview, file, write }) {
 
-    const [fileContent] = fileUtil.getFileContent(file);
+    const [fileContent] = getFileContent(file);
+    const fileName = getFileName(file);
 
-    console.log(`Edit Code File: ${file} - Write: ${write}`);
+    console.log(`IsPreview: ${isPreview} - Edit Code File: ${file} - Write: ${write}`);
+
+    const saveFile = () => {
+        console.log(`Saving Content...`);
+        const content = new File([fileContent], `/${fileName}`, 
+        {
+            type: file.type,
+            lastModified: Date.now()
+        });
+        write(content);
+    }
 
     return (
         <div className={css.editor}>
             <AceEditor
-                placeholder="Placeholder Text"
+                placeholder="Code Editor"
                 mode="javascript"
                 theme="monokai"
                 name="blah2"
@@ -24,10 +35,10 @@ function CodeEditor({ file, write }) {
                 showPrintMargin={true}
                 showGutter={true}
                 highlightActiveLine={true}
-                value={ fileContent }
+                value={fileContent}
                 setOptions={
                     {
-                        readOnly: true,
+                        readOnly: isPreview,
                         enableBasicAutocompletion: true,
                         enableLiveAutocompletion: true,
                         enableSnippets: false,
@@ -36,13 +47,18 @@ function CodeEditor({ file, write }) {
                     }
                 }
             />
+            <button onClick={saveFile}>
+                SAVE
+            </button>
         </div>
     );
 
 }
 
-CodeEditor.prototype = {
-    files: PropTypes.object,
+CodeEditor.propTypes = {
+    isPreview: PropTypes.bool,
+    file: PropTypes.object,
     write: PropTypes.func
 }
 
+export default CodeEditor;

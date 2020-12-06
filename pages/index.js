@@ -17,166 +17,164 @@ import IconJavaScriptSVG from '../public/icon-javascript.svg';
 import IconJSONSVG from '../public/icon-json.svg';
 
 import css from './style.module.css';
-import getFileContent from '../utils/fileUtil';
+import { getFileContent, getFileName } from '../utils/fileUtil';
 
 const TYPE_TO_ICON = {
-  'text/plain': IconPlaintextSVG,
-  'text/markdown': IconMarkdownSVG,
-  'text/javascript': IconJavaScriptSVG,
-  'application/json': IconJSONSVG
+	'text/plain': IconPlaintextSVG,
+	'text/markdown': IconMarkdownSVG,
+	'text/javascript': IconJavaScriptSVG,
+	'application/json': IconJSONSVG
 };
 
 function FilesTable({ files, activeFile, setActiveFile }) {
-  return (
-    <div className={css.files}>
-      <table>
-        <thead>
-          <tr>
-            <th>File</th>
-            <th>Modified</th>
-          </tr>
-        </thead>
-        <tbody>
-          {files.map(file => (
-            <tr
-              key={file.name}
-              className={classNames(
-                css.row,
-                activeFile && activeFile.name === file.name ? css.active : ''
-              )}
-              onClick={() => setActiveFile(file)}
-            >
-              <td className={css.file}>
-                <div
-                  className={css.icon}
-                  dangerouslySetInnerHTML={{
-                    __html: TYPE_TO_ICON[file.type]
-                  }}
-                ></div>
-                {path.basename(file.name)}
-              </td>
+	return (
+		<div className={css.files}>
+			<table>
+				<thead>
+					<tr>
+						<th>File</th>
+						<th>Modified</th>
+					</tr>
+				</thead>
+				<tbody>
+					{files.map(file => (
+						<tr
+							key={file.name}
+							className={classNames(
+								css.row,
+								activeFile && activeFile.name === file.name ? css.active : ''
+							)}
+							onClick={() => setActiveFile(file)}
+						>
+							<td className={css.file}>
+								<div
+									className={css.icon}
+									dangerouslySetInnerHTML={{
+										__html: TYPE_TO_ICON[file.type]
+									}}
+								></div>
+								{path.basename(file.name)}
+							</td>
 
-              <td>
-                {new Date(file.lastModified).toLocaleDateString('en-US', {
-                  weekday: 'long',
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric'
-                })}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
+							<td>
+								{new Date(file.lastModified).toLocaleDateString('en-US', {
+									weekday: 'long',
+									year: 'numeric',
+									month: 'long',
+									day: 'numeric'
+								})}
+							</td>
+						</tr>
+					))}
+				</tbody>
+			</table>
+		</div>
+	);
 }
 
 FilesTable.propTypes = {
-  files: PropTypes.arrayOf(PropTypes.object),
-  activeFile: PropTypes.object,
-  setActiveFile: PropTypes.func
+	files: PropTypes.arrayOf(PropTypes.object),
+	activeFile: PropTypes.object,
+	setActiveFile: PropTypes.func
 };
 
-function EditFile() {
-  
-
-}
-
 function Previewer({ file }) {
-  const [value] = getFileContent(file);
+	const [value] = getFileContent(file);
 
-  // TODO: Remove Later
-//   useEffect(() => {
-//     (async () => {
-//       setValue(await file.text());
-//     })();
-//   }, [file]);
+	// TODO: Remove Later
+	//   useEffect(() => {
+	//     (async () => {
+	//       setValue(await file.text());
+	//     })();
+	//   }, [file]);
 
-  return (
-    <div className={css.preview}>
-      <div className={css.title}>{path.basename(file.name)}</div>
-      <div className={css.content}>{value}</div>
-    </div>
-  );
+	return (
+		<div className={css.preview}>
+			<div className={css.title}>{path.basename(file.name)}</div>
+			<div className={css.content}>{value}</div>
+		</div>
+	);
 }
 
 Previewer.propTypes = {
-  file: PropTypes.object
+	file: PropTypes.object
 };
 
 // Uncomment keys to register editors for media types
 const REGISTERED_EDITORS = {
-  "text/plain": PlaintextEditor,
-  "text/markdown": MarkdownEditor,
-  "application/json": CodeEditor,
+	"text/plain": PlaintextEditor,
+	"text/markdown": MarkdownEditor,
+	"text/javascript": CodeEditor,
+	"application/json": CodeEditor,
 };
 
 function PlaintextFilesChallenge() {
-  const [files, setFiles] = useState([]);
-  const [activeFile, setActiveFile] = useState(null);
+	const [files, setFiles] = useState([]);
+	const [activeFile, setActiveFile] = useState(null);
 
-  useEffect(() => {
-    const files = listFiles();
-    setFiles(files);
-  }, []);
+	useEffect(() => {
+		const files = listFiles();
+		setFiles(files);
+	}, []);
 
-  const write = file => {
-    console.log('Writing soon... ', file.name);
+	const write = file => {
+		console.log('Writing soon... ', file.name);
 
-    // TODO: Write the file to the `files` array
-  };
+		
+		// TODO: Write the file to the `files` array
+	};
 
-  const Editor = activeFile ? REGISTERED_EDITORS[activeFile.type] : null;
+	const Editor = activeFile ? REGISTERED_EDITORS[activeFile.type] : null;
 
-  return (
-    <div className={css.page}>
-      <Head>
-        <title>Rethink Engineering Challenge</title>
-      </Head>
-      <aside>
-        <header>
-          <div className={css.tagline}>Rethink Engineering Challenge</div>
-          <h1>Fun With Plaintext</h1>
-          <div className={css.description}>
-            Let{"'"}s explore files in JavaScript. What could be more fun than
+	return (
+		<div className={css.page}>
+			<Head>
+				<title>Rethink Engineering Challenge</title>
+			</Head>
+			<aside>
+				<header>
+					<div className={css.tagline}>Rethink Engineering Challenge</div>
+					<h1>Fun With Plaintext</h1>
+					<div className={css.description}>
+						Let{"'"}s explore files in JavaScript. What could be more fun than
             rendering and editing plaintext? Not much, as it turns out.
           </div>
-        </header>
+				</header>
 
-        <FilesTable
-          files={files}
-          activeFile={activeFile}
-          setActiveFile={setActiveFile}
-        />
+				<FilesTable
+					files={files}
+					activeFile={activeFile}
+					setActiveFile={setActiveFile}
+				/>
 
-        <div style={{ flex: 1 }}></div>
+				<div style={{ flex: 1 }}></div>
 
-        <footer>
-          <div className={css.link}>
-            <a href="https://v3.rethink.software/jobs">Rethink Software</a>
-            &nbsp;—&nbsp;Frontend Engineering Challenge
-          </div>
-          <div className={css.link}>
-            Questions? Feedback? Email us at jobs@rethink.software
-          </div>
-        </footer>
-      </aside>
+				<footer>
+					<div className={css.link}>
+						<a href="https://v3.rethink.software/jobs">Rethink Software</a>
+						&nbsp;—&nbsp;Frontend Engineering Challenge
+					</div>
+					<div className={css.link}>
+						Questions? Feedback? Email us at jobs@rethink.software
+					</div>
+				</footer>
+			</aside>
 
-      <main className={css.editorWindow}>
-        {activeFile && (
-          <>
-            {Editor && <Editor file={activeFile} write={write} />}
-            {!Editor && <Previewer file={activeFile} />}
-          </>
-        )}
+			<main className={css.editorWindow}>
+				{activeFile && (
+					<>
+						{Editor && <Editor file={activeFile} write={write} />}
+						
+						{!Editor && <Previewer file={activeFile} />}
+					</>
+				)}
 
-        {!activeFile && (
-          <div className={css.empty}>Select a file to view or edit</div>
-        )}
-      </main>
-    </div>
-  );
+				{!activeFile && (
+					<div className={css.empty}>Select a file to view or edit</div>
+				)}
+			</main>
+		</div>
+	);
 }
 
 export default PlaintextFilesChallenge;

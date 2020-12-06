@@ -9,6 +9,7 @@ function MarkdownPreview({ file }) {
   const [fileContent] = getFileContent(file);
 
   console.log(`MD Preview: ${file}`);
+  
   return (
     <div className={css.editor}>
       <ReactMarkdown source={fileContent} />

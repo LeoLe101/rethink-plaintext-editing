@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import path from 'path';
 
-// Re-use the Page Previewer File parser code
+// #region Get File Content
 const getFileContent = (file) => {
     const [fileContent, setFileContent] = useState(null);
 
@@ -18,6 +19,19 @@ const getFileContent = (file) => {
 getFileContent.prototype = {
     file: PropTypes.object
 }
+// #endregion
 
+// #region Get File Name
+const getFileName = (file) => {
+    return path.basename(file.name);
+}
 
-export default getFileContent;
+getFileName.prototype = {
+    file: PropTypes.object
+}
+// #endregion
+
+export {
+    getFileContent,
+    getFileName,
+}
