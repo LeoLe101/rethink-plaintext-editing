@@ -33,9 +33,10 @@ getFileName.prototype = {
 
 // #region Get File Type
 const getFileType = (file) => {
-    // Parse File type with Regex
-
-    // return javascript, html, java
+    const type = getFileName(file).split('.');
+    console.log(`File Type: ${file.type}`);
+    console.log(`- Type Split: ${type}`);
+    return type[1];
 }
 
 getFileType.prototype = {

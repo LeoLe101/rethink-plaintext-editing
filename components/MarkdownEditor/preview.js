@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ReactMarkdown from 'react-markdown';
 
 import css from './style.css';
-import getFileContent from '../../utils/fileUtil';
+import { getFileContent } from '../../utils/fileUtil';
 
 function MarkdownPreview({ file }) {
   const [fileContent] = getFileContent(file);

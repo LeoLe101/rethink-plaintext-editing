@@ -1,52 +1,68 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from 'prop-types';
-import AceEditor from 'react-ace';
-import { getFileContent, getFileName } from "../../utils/fileUtil";
+import { getFileContent, getFileName, getFileType } from "../../utils/fileUtil";
 
 import css from './style.css';
 
-function CodeEditor({ isPreview, file, write }) {
-
+const CodeEditor = ({ file, write }) => {
     const [fileContent] = getFileContent(file);
     const fileName = getFileName(file);
+    const fileType = getFileType(file);
 
-    console.log(`IsPreview: ${isPreview} - Edit Code File: ${file} - Write: ${write}`);
+    console.log(`Edit Code File: ${file} - Write: ${write}`);
 
     const saveFile = () => {
         console.log(`Saving Content...`);
-        const content = new File([fileContent], `/${fileName}`, 
-        {
-            type: file.type,
-            lastModified: Date.now()
-        });
+        const content = new File([fileContent], `/${fileName}`,
+            {
+                type: fileType,
+                lastModified: Date.now()
+            });
         write(content);
     }
 
     return (
-        <div className={css.editor}>
-            <AceEditor
-                placeholder="Code Editor"
-                mode="javascript"
-                theme="monokai"
-                name="blah2"
-                onLoad={this.onLoad}
-                onChange={this.onChange}
-                fontSize={14}
-                showPrintMargin={true}
-                showGutter={true}
-                highlightActiveLine={true}
-                value={fileContent}
-                setOptions={
-                    {
-                        // readOnly: isPreview,
-                        enableBasicAutocompletion: true,
-                        enableLiveAutocompletion: true,
-                        enableSnippets: false,
-                        showLineNumbers: true,
-                        tabSize: 4,
-                    }
-                }
-            />
+        <div>
+            {/* Select Language to Edit */}
+            {/* <fieldset>
+                <legend>Choose language:</legend>
+                <input
+                    type="radio"
+                    id="javascript"
+                    name="language"
+                    value="javascript"
+                    checked={editorLanguage === "javascript"}
+                    onChange={() => setEditorLanguage("javascript")}
+                />
+                <label htmlFor="javascript">JavaScript</label>
+                <input
+                    type="radio"
+                    id="xml"
+                    name="language"
+                    value="markup"
+                    checked={editorLanguage === "markup"}
+                    onChange={() => setEditorLanguage("markup")}
+                />
+                <label htmlFor="xml">XML</label>
+                <input
+                    type="radio"
+                    id="css"
+                    name="language"
+                    value="css"
+                    checked={editorLanguage === "css"}
+                    onChange={() => setEditorLanguage("css")}
+                />
+                <label htmlFor="css">CSS</label>
+            </fieldset> */}
+
+            {/* Code Editor */}
+            <div className={css.editor}>
+                <textarea
+                    className={css.input}
+                    value={file}
+                />
+            </div>
+
             <button onClick={saveFile}>
                 SAVE
             </button>
@@ -56,7 +72,6 @@ function CodeEditor({ isPreview, file, write }) {
 }
 
 CodeEditor.propTypes = {
-    isPreview: PropTypes.bool,
     file: PropTypes.object,
     write: PropTypes.func
 }

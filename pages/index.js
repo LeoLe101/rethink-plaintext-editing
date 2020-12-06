@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import PropTypes from 'prop-types';
-import path from 'path';
 import classNames from 'classnames';
 
 import { listFiles } from '../files';
 
 // Register Editor and Preview
-import MarkdownEditor from '../components/MarkdownEditor';
-import MarkdownPreview from '../components/MarkdownEditor';
-import PlaintextEditor from '../components/PlaintextEditor';
 import CodeEditor from '../components/CodeEditor';
+import MarkdownEditor from '../components/MarkdownEditor';
+import PlaintextEditor from '../components/PlaintextEditor';
+import CodePreview from '../components/CodeEditor/preview';
+import MarkdownPreview from '../components/MarkdownEditor/preview';
 
 import IconPlaintextSVG from '../public/icon-plaintext.svg';
 import IconMarkdownSVG from '../public/icon-markdown.svg';
@@ -54,7 +54,7 @@ function FilesTable({ files, activeFile, setActiveFile }) {
 										__html: TYPE_TO_ICON[file.type]
 									}}
 								></div>
-								{path.basename(file.name)}
+								{getFileName(file)}
 							</td>
 
 							<td>
@@ -81,7 +81,8 @@ FilesTable.propTypes = {
 
 const REGISTERED_PREVIEWER = {
 	"text/markdown": MarkdownPreview,
-	"other": CodePreview
+	"text/javascript": CodePreview,
+	"application/json": CodePreview
 }
 
 function Previewer({ file }) {
@@ -96,11 +97,20 @@ function Previewer({ file }) {
 	//   }, [file]);
 
 	const Preview = activeFile ? REGISTERED_PREVIEWER[activeFile.type] : value;
-	
+
+	const getPreviewer = () => {
+		if (Preview !== value)
+			return (<Preview file={file} />);
+		else
+			return value
+	}
+
 	return (
 		<div className={css.preview}>
-			<div className={css.title}>{path.basename(file.name)}</div>
-			<div className={css.content}>{ value }</div>
+			<div className={css.title}>{getFileName(file)}</div>
+			<div className={css.content}>
+				{getPreviewer()}
+			</div>
 		</div>
 	);
 }
@@ -114,11 +124,12 @@ const REGISTERED_EDITORS = {
 	"text/plain": PlaintextEditor,
 	"text/markdown": MarkdownEditor,
 	"text/javascript": CodeEditor,
-	"application/json": CodeEditor,
+	"application/json": CodeEditor
 };
 
 function PlaintextFilesChallenge() {
 	const [files, setFiles] = useState([]);
+	const [editedFiles, editFiles] = useState([]);
 	const [activeFile, setActiveFile] = useState(null);
 
 	useEffect(() => {
@@ -126,11 +137,11 @@ function PlaintextFilesChallenge() {
 		setFiles(files);
 	}, []);
 
-	const write = file => {
-		console.log('Writing soon... ', file.name);
+	const write = updatedFile => {
+		const newFiles = [...files];
+		// newFiles[indexOfCurrFile] = updatedFile; 
 
-		
-		// TODO: Write the file to the `files` array
+		console.log(`Writing File: ${newFiles}`);
 	};
 
 	const Editor = activeFile ? REGISTERED_EDITORS[activeFile.type] : null;
@@ -173,7 +184,7 @@ function PlaintextFilesChallenge() {
 				{activeFile && (
 					<>
 						{Editor && <Editor file={activeFile} write={write} />}
-						
+
 						{!Editor && <Previewer file={activeFile} />}
 					</>
 				)}
