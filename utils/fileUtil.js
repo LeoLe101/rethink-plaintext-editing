@@ -31,7 +31,20 @@ getFileName.prototype = {
 }
 // #endregion
 
+// #region Get File Type
+const getFileType = (file) => {
+    // Parse File type with Regex
+
+    // return javascript, html, java
+}
+
+getFileType.prototype = {
+    file: PropTypes.object
+}
+// #endregion
+
 export {
     getFileContent,
     getFileName,
+    getFileType
 }

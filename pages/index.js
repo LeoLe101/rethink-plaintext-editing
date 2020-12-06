@@ -6,8 +6,9 @@ import classNames from 'classnames';
 
 import { listFiles } from '../files';
 
-// Used below, these need to be registered
+// Register Editor and Preview
 import MarkdownEditor from '../components/MarkdownEditor';
+import MarkdownPreview from '../components/MarkdownEditor';
 import PlaintextEditor from '../components/PlaintextEditor';
 import CodeEditor from '../components/CodeEditor';
 
@@ -78,8 +79,14 @@ FilesTable.propTypes = {
 	setActiveFile: PropTypes.func
 };
 
+const REGISTERED_PREVIEWER = {
+	"text/markdown": MarkdownPreview,
+	"other": CodePreview
+}
+
 function Previewer({ file }) {
 	const [value] = getFileContent(file);
+	const [activeFile, setActiveFile] = useState(null);
 
 	// TODO: Remove Later
 	//   useEffect(() => {
@@ -88,10 +95,12 @@ function Previewer({ file }) {
 	//     })();
 	//   }, [file]);
 
+	const Preview = activeFile ? REGISTERED_PREVIEWER[activeFile.type] : value;
+	
 	return (
 		<div className={css.preview}>
 			<div className={css.title}>{path.basename(file.name)}</div>
-			<div className={css.content}>{value}</div>
+			<div className={css.content}>{ value }</div>
 		</div>
 	);
 }

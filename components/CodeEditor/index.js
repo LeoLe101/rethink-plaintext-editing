@@ -38,7 +38,7 @@ function CodeEditor({ isPreview, file, write }) {
                 value={fileContent}
                 setOptions={
                     {
-                        readOnly: isPreview,
+                        // readOnly: isPreview,
                         enableBasicAutocompletion: true,
                         enableLiveAutocompletion: true,
                         enableSnippets: false,
