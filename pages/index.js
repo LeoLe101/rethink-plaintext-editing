@@ -6,18 +6,14 @@ import { listFiles } from '../files';
 import css from './style.module.css';
 import { getFileContent, getFileName, getFileType } from '../utils/fileUtil';
 import { REGISTERED_EDITORS, TYPE_TO_ICON } from '../utils/Constant';
+
+// Previewer
 import MarkdownPreview from '../components/MarkdownEditor/preview';
+import CodePreview from '../components/CodeEditor/preview';
 
-function FilesTable({ files, activeFile, editFile, setActiveFile, setEditFile }) {
+function FilesTable({ files, activeFile, setActiveFile, setEditFile }) {
 	const switchFile = (file) => {
-
-		console.log(`Edit File in FT: ${editFile}`);
-		// Case switching file while editing curr file, reset editor UI
-		if (editFile) {
-			setEditFile(false);
-			console.log(`Setting Edit File in FT: ${editFile}`);
-		}
-
+		setEditFile(false);
 		setActiveFile(file);
 	}
 	return (
@@ -43,7 +39,7 @@ function FilesTable({ files, activeFile, editFile, setActiveFile, setEditFile })
 								<div
 									className={css.icon}
 									dangerouslySetInnerHTML={{
-										__html: TYPE_TO_ICON[file.type]
+										__html: TYPE_TO_ICON[getFileType(file)]
 									}}
 								></div>
 								{getFileName(file)}
@@ -67,7 +63,6 @@ function FilesTable({ files, activeFile, editFile, setActiveFile, setEditFile })
 
 FilesTable.propTypes = {
 	files: PropTypes.arrayOf(PropTypes.object),
-	editFile: PropTypes.bool,
 	activeFile: PropTypes.object,
 	setActiveFile: PropTypes.func,
 	setEditFile: PropTypes.func
@@ -78,13 +73,25 @@ function Previewer({ file, setEditFile }) {
 	const fileName = getFileName(file);
 	const fileType = getFileType(file);
 
-	const renderPreviewer = () => {
-		if (fileType === 'md')
-			return <MarkdownPreview file={file} />;
-		else
-			return fileContent;
-	}
+	// console.log(`PREVIEWER`);
+	// console.log(`- Content: ${fileContent}`);
+	// console.log(`- Name: ${fileName}`);
+	// console.log(`- Type: ${fileType}`);
 
+	const renderPreviewer = () => {
+		if (fileType === 'md') {
+			console.log(`MD Preview`);
+			return <MarkdownPreview file={file} />;
+		}
+		else if (fileType === 'txt') {
+			console.log(`PLAIN PREVIEWER`);
+			return fileContent;
+		}
+		else {
+			console.log(`CODE PREVIEWER`);
+			return <CodePreview file={file} />;
+		}
+	}
 
 	return (
 		<div>
@@ -153,7 +160,6 @@ function PlaintextFilesChallenge() {
 
 				<FilesTable
 					files={files}
-					editFile={editFile}
 					activeFile={activeFile}
 					setActiveFile={setActiveFile}
 					setEditFile={setEditFile}

@@ -1,7 +1,7 @@
 export function listFiles() {
 	const guide = new File(
 		[
-`The objective is to significantly improve this file browser. Features to think about include: a text editor, markdown and code previews, or file changes persisting across reloads.
+			`The objective is to significantly improve this file browser. Features to think about include: a text editor, markdown and code previews, or file changes persisting across reloads.
 
 Install any npm packages or use any third party code you'd like, but please make sure it is clear when you do so.
 
@@ -41,7 +41,7 @@ Thanks for trying our challenge!
 	// Here is a markdown file
 	const fancy = new File(
 		[
-`# Some Markdown that could be rendered and HTML
+			`# Some Markdown that could be rendered and HTML
 			
 The *quick* brown fox, jumped **over** the lazy [dog](https://en.wikipedia.org/wiki/Dog).`
 		],
@@ -54,7 +54,7 @@ The *quick* brown fox, jumped **over** the lazy [dog](https://en.wikipedia.org/w
 
 	const javascript = new File(
 		[
-`import { useState, useRef, useEffect } from 'react';
+			`import { useState, useRef, useEffect } from 'react';
 
 // From: https://blog.castiel.me/posts/2019-02-19-react-hooks-get-current-state-back-to-the-future/
 
@@ -76,7 +76,7 @@ export default initialValue => {
 
 	const json = new File(
 		[
-`{
+			`{
 	"name" : "Admin",
 	"email" : "admin@neptune.com",
 	"rights" : [ "admin", "editor", "contributor" ]

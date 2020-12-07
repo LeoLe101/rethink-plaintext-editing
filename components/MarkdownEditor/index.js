@@ -43,6 +43,11 @@ function MarkdownEditor({ file, write }) {
 					className="container__editor"
 				/>
 			</div>
+			
+			{/* Buttons */}
+			<button onClick={() => saveFile()}>
+				SAVE
+			</button>
 		</div>
 	);
 }

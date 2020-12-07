@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from 'prop-types';
 import { getFileContent, getFileName, getFileType } from "../../utils/fileUtil";
 
@@ -9,7 +9,10 @@ const CodeEditor = ({ file, write }) => {
     const fileName = getFileName(file);
     const fileType = getFileType(file);
 
-    console.log(`Edit Code File: ${file} - Write: ${write}`);
+    console.log(`CODE EDITOR`);
+    console.log(`- Content: ${fileContent}`);
+    console.log(`- Name: ${fileName}`);
+    console.log(`- Type: ${fileType}`);
 
     const saveFile = () => {
         console.log(`Saving Content...`);
@@ -23,49 +26,7 @@ const CodeEditor = ({ file, write }) => {
 
     return (
         <div>
-            {/* Select Language to Edit */}
-            {/* <fieldset>
-                <legend>Choose language:</legend>
-                <input
-                    type="radio"
-                    id="javascript"
-                    name="language"
-                    value="javascript"
-                    checked={editorLanguage === "javascript"}
-                    onChange={() => setEditorLanguage("javascript")}
-                />
-                <label htmlFor="javascript">JavaScript</label>
-                <input
-                    type="radio"
-                    id="xml"
-                    name="language"
-                    value="markup"
-                    checked={editorLanguage === "markup"}
-                    onChange={() => setEditorLanguage("markup")}
-                />
-                <label htmlFor="xml">XML</label>
-                <input
-                    type="radio"
-                    id="css"
-                    name="language"
-                    value="css"
-                    checked={editorLanguage === "css"}
-                    onChange={() => setEditorLanguage("css")}
-                />
-                <label htmlFor="css">CSS</label>
-            </fieldset> */}
 
-            {/* Code Editor */}
-            <div className={css.editor}>
-                <textarea
-                    className={css.input}
-                    value={file}
-                />
-            </div>
-
-            <button onClick={saveFile}>
-                SAVE
-            </button>
         </div>
     );
 

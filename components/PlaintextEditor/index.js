@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import css from './style.css';
 import { getFileContent, getFileName, getFileType } from '../../utils/fileUtil';
 
-import Editor from 'react-simple-code-editor';
-import Prism from 'prismjs';
 
+import Editor from "react-simple-code-editor";
+import { highlight, languages } from "prismjs/components/prism-core";
+import "prismjs/components/prism-clike";
+import "prismjs/components/prism-javascript";
 function PlaintextEditor({ file, write }) {
 	const [fileContent, setFileContent] = getFileContent(file);
 	const fileName = getFileName(file);
@@ -28,22 +30,15 @@ function PlaintextEditor({ file, write }) {
 
 	return (
 		<div>
-			<div className={css.editor}>
-				<div className={css.title}>{fileName}</div>
-
-				{/* Editor */}
-				<div className={css.content}>
-					<Editor
-						value={fileContent}
-						onValueChange={code => setFileContent(code)}
-						highlight={code => Prism.highlight(code, Prism.languages.javascript, 'javascript')}
-						padding={10}
-						className={css.code}
-					/>
-				</div>
-			</div>
-
-			{/* Buttons */}
+			<Editor
+				value={fileContent}
+				onValueChange={code => setFileContent(code)}
+				highlight={code => highlight(code, languages.js)}
+				padding={10}
+				style={{
+					fontSize: 15
+				}}
+			/>
 			<button onClick={() => saveFile()}>
 				SAVE
 			</button>

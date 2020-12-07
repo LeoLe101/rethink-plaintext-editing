@@ -173,7 +173,6 @@ body {
   background-color: var(--color-white);
   box-shadow: 0 2px 16px hsla(0, 0%, 0%, 0.16);
   border-radius: 4px;
-  overflow: hidden;
 }
 
 .preview .title {

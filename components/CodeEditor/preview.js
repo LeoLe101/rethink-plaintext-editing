@@ -1,32 +1,23 @@
-import React, { useEffect } from "react";
+import React from "react";
 import PropTypes from 'prop-types';
-import Prism from 'prismjs';
-import { getFileContent, getFileName, getFileType } from "../../utils/fileUtil";
-
+import { getFileContent } from "../../utils/fileUtil";
 import css from './style.css';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { dracula } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 
 function CodePreview({ file }) {
     const [fileContent] = getFileContent(file);
-    const fileName = getFileName(file);
-    const fileType = getFileType(file);
-
-    // Change the highlight when the file change
-    useEffect(() => {
-        Prism.highlightAll();
-    }, [file]);
-
-    console.log(`- Content: ${fileContent}`);
-    console.log(`- Name: ${fileName}`);
-    console.log(`- Type: ${fileType}`);
 
     return (
         <div className={css.editor}>
-            <span>{fileName}</span>
-            <pre>
-                <code className={`language-${fileType}`}>
-                    {fileContent}
-                </code>
-            </pre>
+            <SyntaxHighlighter
+                language="javascript"
+                style={dracula}
+                wrapLongLines={true}
+                showLineNumbers={true}
+            >
+                {fileContent}
+            </SyntaxHighlighter>
         </div>
     );
 
