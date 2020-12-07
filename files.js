@@ -1,19 +1,15 @@
 export function listFiles() {
 	const guide = new File(
 		[
-			`
-			The objective is to significantly improve this file browser. Features to think about include: a text editor, markdown and code previews, or file changes persisting across reloads.
+`The objective is to significantly improve this file browser. Features to think about include: a text editor, markdown and code previews, or file changes persisting across reloads.
 
-			Install any npm packages or use any third party code you'd like, but please make sure it is clear when you do so.
+Install any npm packages or use any third party code you'd like, but please make sure it is clear when you do so.
 
-			Once complete, send us a forked GitHub repo link.
+Once complete, send us a forked GitHub repo link.
 
-			Thanks for trying our challenge!
+Thanks for trying our challenge!
 
-			- Rethink Engineering
-
-			console.log("Hello");
-			`
+- Rethink Engineering `
 		],
 		'/README.txt',
 		{
@@ -33,12 +29,7 @@ export function listFiles() {
 
 	const water = new File(
 		[
-			`
-			Increasing water scarcity is an extremely dangerous symptom of a warming planet. 
-			The World Health Organization estimates that half of the global population will live in water-stressed areas by 2025. 
-			In 2008, the CEO of DOW Chemical said, “Water is the oil of the 21st century.” 
-			There have been 9 major conflicts over oil since 1932.
-			`
+			'Increasing water scarcity is an extremely dangerous symptom of a warming planet. The World Health Organization estimates that half of the global population will live in water-stressed areas by 2025. In 2008, the CEO of DOW Chemical said, “Water is the oil of the 21st century.” There have been 9 major conflicts over oil since 1932.'
 		],
 		'/water.txt',
 		{
@@ -50,11 +41,9 @@ export function listFiles() {
 	// Here is a markdown file
 	const fancy = new File(
 		[
-			`
-			# Some Markdown that could be rendered and HTML
-
-			The *quick* brown fox, jumped **over** the lazy [dog](https://en.wikipedia.org/wiki/Dog).
-			`
+`# Some Markdown that could be rendered and HTML
+			
+The *quick* brown fox, jumped **over** the lazy [dog](https://en.wikipedia.org/wiki/Dog).`
 		],
 		'/fancy.md',
 		{
@@ -65,20 +54,18 @@ export function listFiles() {
 
 	const javascript = new File(
 		[
-			`
-			import { useState, useRef, useEffect } from 'react';
+`import { useState, useRef, useEffect } from 'react';
 
-			// From: https://blog.castiel.me/posts/2019-02-19-react-hooks-get-current-state-back-to-the-future/
+// From: https://blog.castiel.me/posts/2019-02-19-react-hooks-get-current-state-back-to-the-future/
 
-			export default initialValue => {
-				const [state, setState] = useState(initialValue);
-				const stateRef = useRef(state);
-				useEffect(() => {
-				stateRef.current = state;
-				}, [state]);
-				return [state, stateRef, setState];
-			};
-      		`
+export default initialValue => {
+	const [state, setState] = useState(initialValue);
+	const stateRef = useRef(state);
+	useEffect(() => {
+	stateRef.current = state;
+	}, [state]);
+	return [state, stateRef, setState];
+};`
 		],
 		'/use-ref-state.js',
 		{
@@ -89,13 +76,11 @@ export function listFiles() {
 
 	const json = new File(
 		[
-			`
-			{
-				"name" : "Admin",
-				"email" : "admin@neptune.com",
-				"rights" : [ "admin", "editor", "contributor" ]
-			}
-			`
+`{
+	"name" : "Admin",
+	"email" : "admin@neptune.com",
+	"rights" : [ "admin", "editor", "contributor" ]
+} `
 		],
 		'/document.json',
 		{

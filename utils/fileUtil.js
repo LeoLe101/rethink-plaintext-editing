@@ -4,7 +4,7 @@ import path from 'path';
 
 // #region Get File Content
 const getFileContent = (file) => {
-    const [fileContent, setFileContent] = useState(null);
+    const [fileContent, setFileContent] = useState('');
 
     // IIFE to run Async in useEffect
     useEffect(() => {

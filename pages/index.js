@@ -2,32 +2,23 @@ import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-
 import { listFiles } from '../files';
-
-// Register Editor and Preview
-import CodeEditor from '../components/CodeEditor';
-import MarkdownEditor from '../components/MarkdownEditor';
-import PlaintextEditor from '../components/PlaintextEditor';
-import CodePreview from '../components/CodeEditor/preview';
-import MarkdownPreview from '../components/MarkdownEditor/preview';
-
-import IconPlaintextSVG from '../public/icon-plaintext.svg';
-import IconMarkdownSVG from '../public/icon-markdown.svg';
-import IconJavaScriptSVG from '../public/icon-javascript.svg';
-import IconJSONSVG from '../public/icon-json.svg';
-
 import css from './style.module.css';
 import { getFileContent, getFileName, getFileType } from '../utils/fileUtil';
+import { REGISTERED_EDITORS, TYPE_TO_ICON } from '../utils/Constant';
 
-const TYPE_TO_ICON = {
-	'text/plain': IconPlaintextSVG,
-	'text/markdown': IconMarkdownSVG,
-	'text/javascript': IconJavaScriptSVG,
-	'application/json': IconJSONSVG
-};
+function FilesTable({ files, activeFile, editFile, setActiveFile, setEditFile }) {
+	const switchFile = (file) => {
 
-function FilesTable({ files, activeFile, setActiveFile }) {
+		console.log(`Edit File in FT: ${editFile}`);
+		// Case switching file while editing curr file, reset editor UI
+		if (editFile) {
+			setEditFile(false);
+			console.log(`Setting Edit File in FT: ${editFile}`);
+		}
+
+		setActiveFile(file);
+	}
 	return (
 		<div className={css.files}>
 			<table>
@@ -45,7 +36,7 @@ function FilesTable({ files, activeFile, setActiveFile }) {
 								css.row,
 								activeFile && activeFile.name === file.name ? css.active : ''
 							)}
-							onClick={() => setActiveFile(file)}
+							onClick={() => switchFile(file)}
 						>
 							<td className={css.file}>
 								<div
@@ -75,52 +66,41 @@ function FilesTable({ files, activeFile, setActiveFile }) {
 
 FilesTable.propTypes = {
 	files: PropTypes.arrayOf(PropTypes.object),
+	editFile: PropTypes.bool,
 	activeFile: PropTypes.object,
-	setActiveFile: PropTypes.func
+	setActiveFile: PropTypes.func,
+	setEditFile: PropTypes.func
 };
 
-function Previewer({ file }) {
+function Previewer({ file, setEditFile }) {
 	const [value] = getFileContent(file);
-	const fileType = getFileType(file);
+	const fileName = getFileName(file)
 
-	console.log(`Preview file ${file}`)
-	console.log(`- Content ${value}`)
-	console.log(`- Type ${fileType}`)
-
-	const getPreviewer = () => {
-		// if (Preview !== value)
-		// 	return (<Preview file={file} />);
-		// else
-			return value
-	}
+	console.log(` --- PREVIEWING FILE ${file}`);
 
 	return (
 		<div>
 			<div className={css.preview}>
-				<div className={css.title}>{getFileName(file)}</div>
+				<div className={css.title}>{fileName}</div>
 				<div className={css.content}>
-					{ value }
+					{value}
 				</div>
 			</div>
+			<button onClick={() => setEditFile(true)}>
+				EDIT
+			</button>
 		</div>
 	);
 }
 
 Previewer.propTypes = {
-	file: PropTypes.object
-};
-
-// Uncomment keys to register editors for media types
-const REGISTERED_EDITORS = {
-	"text/plain": PlaintextEditor,
-	"text/markdown": MarkdownEditor,
-	"text/javascript": CodeEditor,
-	"application/json": CodeEditor
+	file: PropTypes.object,
+	setEditFile: PropTypes.func
 };
 
 function PlaintextFilesChallenge() {
 	const [files, setFiles] = useState([]);
-	const [editedFiles, editFiles] = useState([]);
+	const [editFile, setEditFile] = useState(false);
 	const [activeFile, setActiveFile] = useState(null);
 
 	useEffect(() => {
@@ -129,12 +109,25 @@ function PlaintextFilesChallenge() {
 	}, []);
 
 	const write = updatedFile => {
-		const newFiles = [...files];
-		// newFiles[indexOfCurrFile] = updatedFile; 
-		console.log(`Writing File: ${newFiles}`);
+		console.log(`Writing File: ${getFileName(updatedFile)}`);
+
+		// Copy DataBase
+		let newFiles = [...files];
+
+		// Find index of updated file
+		const updateFileIndx = newFiles.findIndex((currFile) => currFile.name === updatedFile.name);
+
+		// Update local files list
+		newFiles[updateFileIndx] = updatedFile;
+
+		// Set to original DataBase
+		setFiles(newFiles);
+
+		// TODO: Put the update into a LocalStorage to presist after page reload
 	};
 
 	const Editor = activeFile ? REGISTERED_EDITORS[activeFile.type] : null;
+
 	return (
 		<div className={css.page}>
 			<Head>
@@ -152,8 +145,10 @@ function PlaintextFilesChallenge() {
 
 				<FilesTable
 					files={files}
+					editFile={editFile}
 					activeFile={activeFile}
 					setActiveFile={setActiveFile}
+					setEditFile={setEditFile}
 				/>
 
 				<div style={{ flex: 1 }}></div>
@@ -172,9 +167,9 @@ function PlaintextFilesChallenge() {
 			<main className={css.editorWindow}>
 				{activeFile && (
 					<>
-						{Editor && <Editor file={activeFile} write={write} />}
+						{editFile && <Editor file={activeFile} write={write} />}
 
-						{!Editor && <Previewer file={activeFile} />}
+						{!editFile && <Previewer file={activeFile} setEditFile={setEditFile} />}
 					</>
 				)}
 
