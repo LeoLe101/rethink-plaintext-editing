@@ -6,6 +6,7 @@ import { listFiles } from '../files';
 import css from './style.module.css';
 import { getFileContent, getFileName, getFileType } from '../utils/fileUtil';
 import { REGISTERED_EDITORS, TYPE_TO_ICON } from '../utils/Constant';
+import MarkdownPreview from '../components/MarkdownEditor/preview';
 
 function FilesTable({ files, activeFile, editFile, setActiveFile, setEditFile }) {
 	const switchFile = (file) => {
@@ -73,17 +74,24 @@ FilesTable.propTypes = {
 };
 
 function Previewer({ file, setEditFile }) {
-	const [value] = getFileContent(file);
-	const fileName = getFileName(file)
+	const [fileContent] = getFileContent(file);
+	const fileName = getFileName(file);
+	const fileType = getFileType(file);
 
-	console.log(` --- PREVIEWING FILE ${file}`);
+	const renderPreviewer = () => {
+		if (fileType === 'md')
+			return <MarkdownPreview file={file} />;
+		else
+			return fileContent;
+	}
+
 
 	return (
 		<div>
 			<div className={css.preview}>
 				<div className={css.title}>{fileName}</div>
 				<div className={css.content}>
-					{value}
+					{renderPreviewer()}
 				</div>
 			</div>
 			<button onClick={() => setEditFile(true)}>

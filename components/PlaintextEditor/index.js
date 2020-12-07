@@ -1,18 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Prism from 'prismjs';
-import './style.css';
+import css from './style.css';
 import { getFileContent, getFileName, getFileType } from '../../utils/fileUtil';
 
 import Editor from 'react-simple-code-editor';
-import 'prismjs/components/prism-clike';
-import 'prismjs/components/prism-javascript';
-
+import Prism from 'prismjs';
 
 function PlaintextEditor({ file, write }) {
 	const [fileContent, setFileContent] = getFileContent(file);
 	const fileName = getFileName(file);
-	let fileType = getFileType(file);
+	const fileType = getFileType(file);
 
 	// Change the highlight when file content or type changes
 
@@ -29,23 +26,21 @@ function PlaintextEditor({ file, write }) {
 		write(edit);
 	}
 
-	const editFile = evt => {
-		console.log(`Event: ${evt}`);
-		// setFileContent(event.target.value);
-	}
-
 	return (
 		<div>
+			<div className={css.editor}>
+				<div className={css.title}>{fileName}</div>
 
-			<div className={window}>
 				{/* Editor */}
-				<Editor
-					placeholder="Type some code…"
-					value={fileContent}
-					onValueChange={code => setFileContent(code)}
-					highlight={code => Prism.highlight(code, Prism.languages.js)}
-					padding={10}
-				/>
+				<div className={css.content}>
+					<Editor
+						value={fileContent}
+						onValueChange={code => setFileContent(code)}
+						highlight={code => Prism.highlight(code, Prism.languages.javascript, 'javascript')}
+						padding={10}
+						className={css.code}
+					/>
+				</div>
 			</div>
 
 			{/* Buttons */}

@@ -14,7 +14,7 @@ const REGISTERED_EDITORS = {
     "text/plain": PlaintextEditor,
     "text/markdown": MarkdownEditor,
     "text/javascript": PlaintextEditor,
-    "application/json": CodeEditor
+    "application/json": PlaintextEditor
 };
 
 const TYPE_TO_ICON = {
@@ -24,6 +24,9 @@ const TYPE_TO_ICON = {
     'application/json': IconJSONSVG
 };
 
+const FILE_TYPE = {
+    'md': "md"
+}
 export {
     REGISTERED_EDITORS,
     TYPE_TO_ICON

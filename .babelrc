@@ -1,0 +1,28 @@
+{
+    "presets": [
+        "next/babel"
+    ],
+    "plugins": [
+        [
+            "prismjs",
+            {
+                "languages": [
+                    "javascript",
+                    "css",
+                    "html",
+                    "markdown"
+                ],
+                "plugins": [
+                    "line-numbers",
+                    "show-language"
+                ],
+                "theme": "okaidia",
+                "css": true
+            }
+        ],
+        [
+            "@babel/plugin-transform-react-jsx"
+        ]
+    ]
+}
+// https://betterstack.dev/blog/code-highlighting-in-react-using-prismjs/
