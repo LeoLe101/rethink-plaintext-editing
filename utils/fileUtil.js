@@ -6,13 +6,13 @@ import path from 'path';
 const getFileContent = (file) => {
     const [fileContent, setFileContent] = useState(null);
 
-    // Set new content when Active File changed
-    useEffect(
-        async () => {
+    // IIFE to run Async in useEffect
+    useEffect(() => {
+        (async () => {
             setFileContent(await file.text());
-        },
-        [file]
-    );
+        })();
+    }, [file]);
+
     return [fileContent, setFileContent];
 }
 
@@ -34,8 +34,6 @@ getFileName.prototype = {
 // #region Get File Type
 const getFileType = (file) => {
     const type = getFileName(file).split('.');
-    console.log(`File Type: ${file.type}`);
-    console.log(`- Type Split: ${type}`);
     return type[1];
 }
 

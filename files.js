@@ -11,6 +11,8 @@ export function listFiles() {
 			Thanks for trying our challenge!
 
 			- Rethink Engineering
+
+			console.log("Hello");
 			`
 		],
 		'/README.txt',

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import PropTypes from 'prop-types';
-import Prism from 'primjs';
+import Prism from 'prismjs';
 import { getFileContent, getFileName, getFileType } from "../../utils/fileUtil";
 
 import css from './style.css';

@@ -18,7 +18,7 @@ import IconJavaScriptSVG from '../public/icon-javascript.svg';
 import IconJSONSVG from '../public/icon-json.svg';
 
 import css from './style.module.css';
-import { getFileContent, getFileName } from '../utils/fileUtil';
+import { getFileContent, getFileName, getFileType } from '../utils/fileUtil';
 
 const TYPE_TO_ICON = {
 	'text/plain': IconPlaintextSVG,
@@ -79,37 +79,28 @@ FilesTable.propTypes = {
 	setActiveFile: PropTypes.func
 };
 
-const REGISTERED_PREVIEWER = {
-	"text/markdown": MarkdownPreview,
-	"text/javascript": CodePreview,
-	"application/json": CodePreview
-}
-
 function Previewer({ file }) {
 	const [value] = getFileContent(file);
-	const [activeFile, setActiveFile] = useState(null);
+	const fileType = getFileType(file);
 
-	// TODO: Remove Later
-	//   useEffect(() => {
-	//     (async () => {
-	//       setValue(await file.text());
-	//     })();
-	//   }, [file]);
-
-	const Preview = activeFile ? REGISTERED_PREVIEWER[activeFile.type] : value;
+	console.log(`Preview file ${file}`)
+	console.log(`- Content ${value}`)
+	console.log(`- Type ${fileType}`)
 
 	const getPreviewer = () => {
-		if (Preview !== value)
-			return (<Preview file={file} />);
-		else
+		// if (Preview !== value)
+		// 	return (<Preview file={file} />);
+		// else
 			return value
 	}
 
 	return (
-		<div className={css.preview}>
-			<div className={css.title}>{getFileName(file)}</div>
-			<div className={css.content}>
-				{getPreviewer()}
+		<div>
+			<div className={css.preview}>
+				<div className={css.title}>{getFileName(file)}</div>
+				<div className={css.content}>
+					{ value }
+				</div>
 			</div>
 		</div>
 	);
@@ -140,12 +131,10 @@ function PlaintextFilesChallenge() {
 	const write = updatedFile => {
 		const newFiles = [...files];
 		// newFiles[indexOfCurrFile] = updatedFile; 
-
 		console.log(`Writing File: ${newFiles}`);
 	};
 
 	const Editor = activeFile ? REGISTERED_EDITORS[activeFile.type] : null;
-
 	return (
 		<div className={css.page}>
 			<Head>
