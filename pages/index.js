@@ -11,11 +11,18 @@ import { REGISTERED_EDITORS, TYPE_TO_ICON } from '../utils/Constant';
 import MarkdownPreview from '../components/MarkdownEditor/preview';
 import CodePreview from '../components/CodeEditor/preview';
 
-function FilesTable({ files, activeFile, setActiveFile, setEditFile }) {
-	const switchFile = (file) => {
-		setEditFile(false);
+function FilesTable({ files, editFile, activeFile, setActiveFile, setEditFile }) {
+	const switchFile = (evt, file) => {
+		evt.preventDefault();
+		evt.stopPropagation();
+
+		if (editFile)
+			setEditFile(false);
+
 		setActiveFile(file);
 	}
+
+	console.log(`Editing File? ${editFile}`);
 	return (
 		<div className={css.files}>
 			<table>
@@ -33,13 +40,13 @@ function FilesTable({ files, activeFile, setActiveFile, setEditFile }) {
 								css.row,
 								activeFile && activeFile.name === file.name ? css.active : ''
 							)}
-							onClick={() => switchFile(file)}
+							onClick={evt => switchFile(evt, file)}
 						>
 							<td className={css.file}>
 								<div
 									className={css.icon}
 									dangerouslySetInnerHTML={{
-										__html: TYPE_TO_ICON[getFileType(file)]
+										__html: TYPE_TO_ICON[file.type]
 									}}
 								></div>
 								{getFileName(file)}
@@ -63,6 +70,7 @@ function FilesTable({ files, activeFile, setActiveFile, setEditFile }) {
 
 FilesTable.propTypes = {
 	files: PropTypes.arrayOf(PropTypes.object),
+	editFile: PropTypes.bool,
 	activeFile: PropTypes.object,
 	setActiveFile: PropTypes.func,
 	setEditFile: PropTypes.func
@@ -72,11 +80,6 @@ function Previewer({ file, setEditFile }) {
 	const [fileContent] = getFileContent(file);
 	const fileName = getFileName(file);
 	const fileType = getFileType(file);
-
-	// console.log(`PREVIEWER`);
-	// console.log(`- Content: ${fileContent}`);
-	// console.log(`- Name: ${fileName}`);
-	// console.log(`- Type: ${fileType}`);
 
 	const renderPreviewer = () => {
 		if (fileType === 'md') {
@@ -92,6 +95,8 @@ function Previewer({ file, setEditFile }) {
 			return <CodePreview file={file} />;
 		}
 	}
+
+	console.log(`PREVIEWER: ${fileContent}`);
 
 	return (
 		<div>
@@ -124,13 +129,12 @@ function PlaintextFilesChallenge() {
 	}, []);
 
 	const write = updatedFile => {
-		console.log(`Writing File: ${getFileName(updatedFile)}`);
 
 		// Copy DataBase
-		let newFiles = [...files];
+		const newFiles = [...files];
 
 		// Find index of updated file
-		const updateFileIndx = newFiles.findIndex((currFile) => currFile.name === updatedFile.name);
+		const updateFileIndx = newFiles.findIndex(currFile => currFile.name === updatedFile.name);
 
 		// Update local files list
 		newFiles[updateFileIndx] = updatedFile;
@@ -140,6 +144,9 @@ function PlaintextFilesChallenge() {
 
 		// TODO: Put the update into a LocalStorage to presist after page reload
 	};
+
+	if (activeFile)
+		console.log(`Active File Type: ${activeFile.type}`);
 
 	const Editor = activeFile ? REGISTERED_EDITORS[activeFile.type] : null;
 
@@ -160,6 +167,7 @@ function PlaintextFilesChallenge() {
 
 				<FilesTable
 					files={files}
+					editFile={editFile}
 					activeFile={activeFile}
 					setActiveFile={setActiveFile}
 					setEditFile={setEditFile}

@@ -1,28 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import css from './style.css';
-import { getFileContent, getFileName, getFileType } from '../../utils/fileUtil';
+import { getFileContent, getFileName } from '../../utils/fileUtil';
 
-
-import Editor from "react-simple-code-editor";
-import { highlight, languages } from "prismjs/components/prism-core";
-import "prismjs/components/prism-clike";
-import "prismjs/components/prism-javascript";
 function PlaintextEditor({ file, write }) {
 	const [fileContent, setFileContent] = getFileContent(file);
 	const fileName = getFileName(file);
-	const fileType = getFileType(file);
-
-	// Change the highlight when file content or type changes
 
 	console.log(`Plain Text EDITOR`);
 	console.log(`- Content: ${fileContent}`);
 	console.log(`- Name: ${fileName}`);
-	console.log(`- Type: ${fileType}`);
 
-	const saveFile = () => {
+	const saveFile = (evt) => {
+		evt.preventDefault();
+		evt.stopPropagation()
+
+		// TODO: Modal pop up
+
 		const edit = new File([fileContent], `/${fileName}`, {
-			type: fileType,
+			type: file.type,
 			lastModified: Date.now()
 		});
 		write(edit);
@@ -30,16 +26,15 @@ function PlaintextEditor({ file, write }) {
 
 	return (
 		<div>
-			<Editor
-				value={fileContent}
-				onValueChange={code => setFileContent(code)}
-				highlight={code => highlight(code, languages.js)}
-				padding={10}
-				style={{
-					fontSize: 15
-				}}
-			/>
-			<button onClick={() => saveFile()}>
+			<div className={css.editor}>
+				<div className={css.title}>{fileName}</div>
+				<textarea
+					value={fileContent}
+					onChange={(evt) => setFileContent(evt.target.value)}
+					className={css.txt}
+				/>
+			</div>
+			<button onClick={evt => saveFile(evt)}>
 				SAVE
 			</button>
 		</div>
@@ -48,7 +43,7 @@ function PlaintextEditor({ file, write }) {
 
 PlaintextEditor.propTypes = {
 	file: PropTypes.object,
-	write: PropTypes.func
+	write: PropTypes.func,
 };
 
 export default PlaintextEditor;
