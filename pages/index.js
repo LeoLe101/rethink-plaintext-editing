@@ -22,7 +22,6 @@ function FilesTable({ files, editFile, activeFile, setActiveFile, setEditFile })
 		setActiveFile(file);
 	}
 
-	console.log(`Editing File? ${editFile}`);
 	return (
 		<div className={css.files}>
 			<table>
@@ -83,20 +82,16 @@ function Previewer({ file, setEditFile }) {
 
 	const renderPreviewer = () => {
 		if (fileType === 'md') {
-			console.log(`MD Preview`);
 			return <MarkdownPreview file={file} />;
+
 		}
 		else if (fileType === 'txt') {
-			console.log(`PLAIN PREVIEWER`);
-			return fileContent;
+			return <div className={css.plainTxt}>{fileContent}</div>;
 		}
 		else {
-			console.log(`CODE PREVIEWER`);
 			return <CodePreview file={file} />;
 		}
 	}
-
-	console.log(`PREVIEWER: ${fileContent}`);
 
 	return (
 		<div className={css.preview}>
@@ -122,7 +117,6 @@ function PlaintextFilesChallenge() {
 	const [files, setFiles] = useState([]);
 	const [editFile, setEditFile] = useState(false);
 	const [activeFile, setActiveFile] = useState(null);
-	const [options, setOptions] = useState(null);
 
 	useEffect(() => {
 		const files = listFiles();
@@ -145,9 +139,6 @@ function PlaintextFilesChallenge() {
 
 		// TODO: Put the update into a LocalStorage to presist after page reload
 	};
-
-	if (activeFile)
-		console.log(`Active File Type: ${activeFile.type}`);
 
 	const Editor = activeFile ? REGISTERED_EDITORS[activeFile.type] : null;
 
@@ -190,7 +181,7 @@ function PlaintextFilesChallenge() {
 			<main className={css.editorWindow}>
 				{activeFile && (
 					<>
-						{editFile && <Editor file={activeFile} write={write} options={options} />}
+						{editFile && <Editor file={activeFile} write={write} />}
 
 						{!editFile && <Previewer file={activeFile} setEditFile={setEditFile} />}
 					</>

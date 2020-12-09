@@ -3,13 +3,17 @@ import PropTypes from 'prop-types';
 import css from './style.css';
 import { getFileContent, getFileName } from '../../utils/fileUtil';
 
+const DEBUG = false;
+
 function PlaintextEditor({ file, write }) {
 	const [fileContent, setFileContent] = getFileContent(file);
 	const fileName = getFileName(file);
 
-	console.log(`Plain Text EDITOR`);
-	console.log(`- Content: ${fileContent}`);
-	console.log(`- Name: ${fileName}`);
+	if (DEBUG) {
+		console.log(`Plain Text EDITOR`);
+		console.log(`- Content: ${fileContent}`);
+		console.log(`- Name: ${fileName}`);
+	}
 
 	const saveFile = (evt) => {
 		evt.preventDefault();

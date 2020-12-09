@@ -9,15 +9,17 @@ function MarkdownPreview({ file }) {
   const [fileContent] = getFileContent(file);
 
   return (
-    <div className={css.editor}>
-      <ReactMarkdown source={fileContent} />
+    <div className={css.previewer}>
+      <ReactMarkdown
+        source={fileContent}
+        className={css.highlighter}
+      />
     </div>
   );
 }
 
 MarkdownPreview.propTypes = {
-  file: PropTypes.object,
-  write: PropTypes.func
+  file: PropTypes.object
 };
 
 export default MarkdownPreview;

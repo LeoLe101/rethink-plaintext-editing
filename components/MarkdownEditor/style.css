@@ -1,3 +1,75 @@
-.editor {
+.previewer {
   width: auto;
+}
+
+.previewer .highlighter {
+  margin: 1em !important;
+  height: 100%;
+  max-height: 40vh;
+  width: auto;
+}
+
+.editor {
+  width: 55vw;
+  height: 50vh;
+  background-color: var(--color-white);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 2px 16px hsla(0, 0%, 0%, 0.16);
+  border-radius: 4px;
+}
+
+.editor .title {
+  width: 100%;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-dark-mute);
+  padding: 0 20px;
+  line-height: 50px;
+  background-color: #c3cc66;
+}
+
+.editor .content {
+  width: auto;
+  height: 100%;
+  max-height: 40vh;
+  display: flex;
+}
+
+.editor .txt {
+  margin: 1em;
+  height: 100%;
+  width: 100%;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--color-text-dark);
+  white-space: pre-wrap;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  resize: none;
+}
+
+.editor .highlighter {
+  margin: 1em !important;
+  height: 100%;
+  width: 100%;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--color-text-dark);
+  white-space: pre-wrap;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}
+
+.editor .save {
+  background-color: #6aca67;
+  border: none;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 23px;
+  width: 50%;
+  align-self: center;
+  margin: 25px 0 11px;
 }

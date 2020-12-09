@@ -6,15 +6,21 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { dracula } from 'react-syntax-highlighter/dist/cjs/styles/prism'
 import css from './style.css';
 
+const DEBUG = true;
+
 const CodeEditor = ({ file, write }) => {
 	const [fileContent, setFileContent] = getFileContent(file);
 	const fileName = getFileName(file);
-	const fileType = getFileType(file);
+	let fileType = getFileType(file);
 
-	console.log(`CODE EDITOR`);
-	console.log(`- Content: ${fileContent}`);
-	console.log(`- Name: ${fileName}`);
-	console.log(`- Type: ${fileType}`);
+	// if (fileType === 'md') fileType = 'markdown';
+
+	if (DEBUG) {
+		console.log(`CODE EDITOR`);
+		console.log(`- Content: ${fileContent}`);
+		console.log(`- Name: ${fileName}`);
+		console.log(`- Type: ${fileType}`);
+	}
 
 	const saveFile = () => {
 		const edit = new File([fileContent], `/${fileName}`, {
@@ -24,12 +30,10 @@ const CodeEditor = ({ file, write }) => {
 		write(edit);
 	}
 
-	// Handle Tab
+	// Handle Tab to simulate code editor Tab
 	const handleKeyDown = evt => {
 		let value = fileContent;
 		let startPos = evt.currentTarget.selectionStart;
-
-		console.log("Key handler: ", evt.currentTarget);
 
 		// handle 4-space indent on
 		if (evt.key === "Tab") {
@@ -44,10 +48,12 @@ const CodeEditor = ({ file, write }) => {
 			setFileContent(value);
 		}
 	};
+
 	return (
 		<div className={css.editor}>
 			<div className={css.title}>{fileName}</div>
 			<div className={css.content}>
+				{/* EDITOR */}
 				<textarea
 					value={fileContent}
 					onChange={(evt) => setFileContent(evt.target.value)}
@@ -55,8 +61,9 @@ const CodeEditor = ({ file, write }) => {
 					className={css.txt}
 				/>
 
+				{/* CODE HIGHLIGHTER */}
 				<SyntaxHighlighter
-					language="javascript"
+					language={fileType}
 					style={dracula}
 					wrapLongLines={true}
 					showLineNumbers={true}

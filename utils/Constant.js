@@ -19,7 +19,7 @@ const TYPE_TO_ICON = {
 // Uncomment keys to register editors for media types
 const REGISTERED_EDITORS = {
     "text/plain": PlaintextEditor,
-    "text/markdown": MarkdownEditor,
+    "text/markdown": CodeEditor,
     "text/javascript": CodeEditor,
     "application/json": CodeEditor
 };
