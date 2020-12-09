@@ -8,12 +8,14 @@ import css from './style.css';
 
 const DEBUG = true;
 
+/**
+ * This Code Editor will handle both the MD and the Code editor
+ * as 1 reuseable component. Reduce the amount of code needed to maintain
+ */
 const CodeEditor = ({ file, write }) => {
 	const [fileContent, setFileContent] = getFileContent(file);
 	const fileName = getFileName(file);
 	let fileType = getFileType(file);
-
-	// if (fileType === 'md') fileType = 'markdown';
 
 	if (DEBUG) {
 		console.log(`CODE EDITOR`);

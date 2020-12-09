@@ -1,5 +1,4 @@
 // Register Editor and Preview
-import MarkdownEditor from '../components/MarkdownEditor';
 import PlaintextEditor from '../components/PlaintextEditor';
 import CodeEditor from '../components/CodeEditor';
 
