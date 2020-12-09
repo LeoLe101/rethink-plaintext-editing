@@ -25,16 +25,19 @@ function PlaintextEditor({ file, write }) {
 	}
 
 	return (
-		<div>
-			<div className={css.editor}>
-				<div className={css.title}>{fileName}</div>
+		<div className={css.editor}>
+			<div className={css.title}>{fileName}</div>
+			<div className={css.content}>
 				<textarea
 					value={fileContent}
 					onChange={(evt) => setFileContent(evt.target.value)}
 					className={css.txt}
 				/>
 			</div>
-			<button onClick={evt => saveFile(evt)}>
+			<button
+				className={css.save}
+				onClick={evt => saveFile(evt)}
+			>
 				SAVE
 			</button>
 		</div>

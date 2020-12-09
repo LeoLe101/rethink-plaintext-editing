@@ -99,14 +99,14 @@ function Previewer({ file, setEditFile }) {
 	console.log(`PREVIEWER: ${fileContent}`);
 
 	return (
-		<div>
-			<div className={css.preview}>
-				<div className={css.title}>{fileName}</div>
-				<div className={css.content}>
-					{renderPreviewer()}
-				</div>
+		<div className={css.preview}>
+			<div className={css.title}>{fileName}</div>
+			<div className={css.content}>
+				{renderPreviewer()}
 			</div>
-			<button onClick={() => setEditFile(true)}>
+			<button
+				className={css.save}
+				onClick={() => setEditFile(true)}>
 				EDIT
 			</button>
 		</div>
@@ -122,6 +122,7 @@ function PlaintextFilesChallenge() {
 	const [files, setFiles] = useState([]);
 	const [editFile, setEditFile] = useState(false);
 	const [activeFile, setActiveFile] = useState(null);
+	const [options, setOptions] = useState(null);
 
 	useEffect(() => {
 		const files = listFiles();
@@ -189,7 +190,7 @@ function PlaintextFilesChallenge() {
 			<main className={css.editorWindow}>
 				{activeFile && (
 					<>
-						{editFile && <Editor file={activeFile} write={write} />}
+						{editFile && <Editor file={activeFile} write={write} options={options} />}
 
 						{!editFile && <Previewer file={activeFile} setEditFile={setEditFile} />}
 					</>
