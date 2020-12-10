@@ -3,6 +3,8 @@ import css from './style.css';
 import { API_ROUTES, TYPE_TO_ICON } from '../../utils/Constant';
 
 function DataTable() {
+    const [url, setUrl] = useState('');
+    const [shortenedUrl, setShortenedUrl] = useState('');
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(1);
     const [datas, setData] = useState([]);
@@ -35,6 +37,26 @@ function DataTable() {
             .catch(err => console.log(err));
     }
 
+    const postData = async (apiRoutes) => {
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ originalUrl: url })
+        };
+        await fetch(apiRoutes, requestOptions)
+            .then(res => res.json())
+            .then(resJson => {
+                console.log("Url suc", resJson.success);
+                console.log("Url short", resJson.url.shortenURL);
+                console.log("Url mess", resJson.message);
+                if (resJson.success)
+                    setShortenedUrl(resJson.url.shortenURL);
+                else
+                    setShortenedUrl(resJson.message);
+            })
+            .catch(err => console.log(err));
+    }
+
     const nextPage = event => {
         event.preventDefault();
         if (page < hasMore)
@@ -47,6 +69,14 @@ function DataTable() {
             setPage(page - 1);
     }
 
+    const handleUrl = input => {
+        setUrl(input);
+    }
+
+    const shortenUrl = () => {
+        postData(`${API_ROUTES.Url}`);
+    }
+
     const handleOnChange = input => {
         setSearchValue(input);
 
@@ -57,67 +87,96 @@ function DataTable() {
     };
 
     return (
-        <div className={css.datas}>
-            {isLoading && <p>Loading Database...</p>}
-            <form>
-                <input
-                    placeholder="Search"
-                    onChange={event => handleOnChange(event.target.value)}
-                />
-            </form>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Blend Name</th>
-                        <th>Origin</th>
-                        <th>Variety</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {datas.map(data => (
-                        <tr
-                            key={data.id}
-                            className={css.row}
-                        >
-                            <td className={css.data}>
-                                <div
-                                    className={css.icon}
-                                    dangerouslySetInnerHTML={{
-                                        __html: TYPE_TO_ICON['tea']
-                                    }}
-                                ></div>
-                                {data.blend_name}
-                            </td>
+        <div>
+            <div className={css.urlShortener}>
+                <h1>URL Shortener</h1>
+                <form>
+                    <input
+                        className={css.urlBar}
+                        placeholder="Enter URL here"
+                        onChange={event => handleUrl(event.target.value)}
+                    />
+                </form>
 
-                            <td>
-                                {data.origin}
-                            </td>
+                <button
+                    onClick={() => shortenUrl()}
+                    className={css.urlButton}
+                >
+                    Submit
+                </button>
 
-                            <td>
-                                {data.variety}
-                            </td>
+                <p className={css.url}>
+                    Shortened URL:
+                    <a href={shortenedUrl}>
+                        {shortenedUrl}
+                    </a>
+                </p>
+            </div>
+
+            <div className={css.datas}>
+                <h1>Data List</h1>
+                {isLoading && <p>Loading Database...</p>}
+                <form>
+                    <input
+                        className={css.searchBar}
+                        placeholder="Search"
+                        onChange={event => handleOnChange(event.target.value)}
+                    />
+                </form>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Blend Name</th>
+                            <th>Origin</th>
+                            <th>Variety</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
-            <div className={css.buttonDiv}>
-                <button
-                    onClick={evt => previousPage(evt)}
-                    className={css.pageButton}
-                >
-                    Previous Page
-                </button>
+                    </thead>
+                    <tbody>
+                        {datas.map(data => (
+                            <tr
+                                key={data.id}
+                                className={css.row}
+                            >
+                                <td className={css.data}>
+                                    <div
+                                        className={css.icon}
+                                        dangerouslySetInnerHTML={{
+                                            __html: TYPE_TO_ICON['tea']
+                                        }}
+                                    ></div>
+                                    {data.blend_name}
+                                </td>
 
-                <div className={css.pageNumber}>
-                    {page}
+                                <td>
+                                    {data.origin}
+                                </td>
+
+                                <td>
+                                    {data.variety}
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+                <div className={css.buttonDiv}>
+                    <button
+                        onClick={evt => previousPage(evt)}
+                        className={css.pageButton}
+                    >
+                        Previous Page
+                    </button>
+
+                    <div className={css.pageNumber}>
+                        {page}
+                    </div>
+
+                    <button
+                        onClick={evt => nextPage(evt)}
+                        className={css.pageButton}
+                    >
+                        Next Page
+                    </button>
                 </div>
-
-                <button
-                    onClick={evt => nextPage(evt)}
-                    className={css.pageButton}
-                >
-                    Next Page
-                </button>
             </div>
         </div>
     );

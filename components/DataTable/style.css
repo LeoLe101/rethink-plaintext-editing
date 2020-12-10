@@ -1,3 +1,33 @@
+.urlShortener {
+    width: 40vw;
+    padding: 20px 0;
+}
+
+.urlShortener .urlBar {
+    width: 100%;
+    height: 50px;
+    font-size: 30px;
+}
+
+.urlShortener .urlButton {
+    background-color: #3cce17;
+    border: none;
+    color: white;
+    width: 100%;
+    height: 50px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+.urlShortener .url {
+    width: 100%;
+    height: 50px;
+    font-size: 30px;
+    margin-left: 10px;
+}
+
 .datas {
     width: 40vw;
     padding: 20px 0;
@@ -87,4 +117,10 @@
     line-height: 10px;
     height: 25px;
     text-align: center;
+}
+
+.datas .searchBar {
+    width: 100%;
+    height: 50px;
+    font-size: 30px;
 }
