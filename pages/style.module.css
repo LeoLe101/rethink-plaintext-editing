@@ -76,74 +76,7 @@ html, body {
   color: var(--color-active);
 }
 
-/* Files Table */
-
-.files {
-  width: 540px;
-  padding: 20px 0;
-}
-
-.files table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.files th {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--color-text-dark-mute);
-  text-align: left;
-  padding-bottom: 12px;
-}
-
-.files th:first-child {
-  padding-left: 12px;
-}
-
-.files td {
-  font-size: 14px;
-  line-height: 20px;
-  border: none;
-}
-
-.files .row {
-  border-bottom: 1px solid var(--color-border);
-  color: var(--color-text-dark);
-  font-size: 16px;
-  height: 54px;
-  cursor: pointer;
-  transition: all 0.12s ease-in-out;
-}
-
-.files .row:hover {
-  background-color: var(--color-active-highlight);
-}
-
-.files .row.active {
-  color: #fff;
-  background-color: var(--color-active);
-}
-
-.files .row:last-child {
-  border-bottom: none;
-}
-
-.files .file {
-  display: flex;
-  align-items: center;
-  height: 54px;
-  font-size: 14px;
-  font-weight: 600;
-  padding: 0 12px;
-}
-
-.files .icon {
-  height: 31.56px;
-  width: 26px;
-  margin-right: 16px;
-}
-
-/* Editor and Preview */
+/* Editor */
 
 .editorWindow {
   flex: 1;
@@ -164,43 +97,8 @@ html, body {
   color: var(--color-text-dark-mute);
 }
 
-.preview {
-  width: 55vh;
-  height: auto;
-  max-height: 50vh;
-  background-color: var(--color-white);
-  box-shadow: 0 2px 16px hsla(0, 0%, 0%, 0.16);
-  border-radius: 4px;
-  display: flex;
-  flex-direction: column;
-}
-
-.preview .title {
-  width: 100%;
-  border-bottom: 1px solid var(--color-border);
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--color-text-dark-mute);
-  padding: 0 20px;
-  line-height: 40px;
-  background-color: var(--color-background);
-}
-
-.preview .content {
-  color: var(--color-text-dark);
-  white-space: pre-wrap;
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
-  font-size: 15px;
-  width: auto;
-  height: 100%;
-  max-height: 40vh;
-  margin: 1em;
-  white-space: pre-line;
-  overflow: scroll;
-}
-
-.preview .save {
-  background-color: #6e9cff;
+.dataButton {
+  background-color: #0044ff;
   border: none;
   color: white;
   padding: 10px;
@@ -208,7 +106,21 @@ html, body {
   text-decoration: none;
   display: inline-block;
   font-size: 23px;
-  width: 50%;
+  width: 100%;
+  align-self: center;
+  margin-bottom: 0.5em;
+}
+
+.urlButton {
+  background-color: #3383fa;
+  border: none;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 23px;
+  width: 100%;
   align-self: center;
   margin-bottom: 0.5em;
 }

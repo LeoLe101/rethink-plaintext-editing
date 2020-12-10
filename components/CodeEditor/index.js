@@ -6,7 +6,7 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { dracula } from 'react-syntax-highlighter/dist/cjs/styles/prism'
 import css from './style.css';
 
-const DEBUG = true;
+const DEBUG = false;
 
 /**
  * This Code Editor will handle both the MD and the Code editor

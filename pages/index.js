@@ -1,127 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { listFiles } from '../files';
 import css from './style.module.css';
-import { getFileContent, getFileName, getFileType } from '../utils/fileUtil';
-import { REGISTERED_EDITORS, TYPE_TO_ICON } from '../utils/Constant';
+import { REGISTERED_EDITORS } from '../utils/Constant';
 
-// Previewer
-import MarkdownPreview from '../components/MarkdownEditor/preview';
-import CodePreview from '../components/CodeEditor/preview';
-
-function FilesTable({ files, editFile, activeFile, setActiveFile, setEditFile }) {
-	const switchFile = (evt, file) => {
-		evt.preventDefault();
-		evt.stopPropagation();
-
-		if (editFile)
-			setEditFile(false);
-
-		setActiveFile(file);
-	}
-
-	return (
-		<div className={css.files}>
-			<table>
-				<thead>
-					<tr>
-						<th>File</th>
-						<th>Modified</th>
-					</tr>
-				</thead>
-				<tbody>
-					{files.map(file => (
-						<tr
-							key={file.name}
-							className={classNames(
-								css.row,
-								activeFile && activeFile.name === file.name ? css.active : ''
-							)}
-							onClick={evt => switchFile(evt, file)}
-						>
-							<td className={css.file}>
-								<div
-									className={css.icon}
-									dangerouslySetInnerHTML={{
-										__html: TYPE_TO_ICON[file.type]
-									}}
-								></div>
-								{getFileName(file)}
-							</td>
-
-							<td>
-								{new Date(file.lastModified).toLocaleDateString('en-US', {
-									weekday: 'long',
-									year: 'numeric',
-									month: 'long',
-									day: 'numeric'
-								})}
-							</td>
-						</tr>
-					))}
-				</tbody>
-			</table>
-		</div>
-	);
-}
-
-FilesTable.propTypes = {
-	files: PropTypes.arrayOf(PropTypes.object),
-	editFile: PropTypes.bool,
-	activeFile: PropTypes.object,
-	setActiveFile: PropTypes.func,
-	setEditFile: PropTypes.func
-};
-
-function Previewer({ file, setEditFile }) {
-	const [fileContent] = getFileContent(file);
-	const fileName = getFileName(file);
-	const fileType = getFileType(file);
-
-	const renderPreviewer = () => {
-		if (fileType === 'md') {
-			return <MarkdownPreview file={file} />;
-
-		}
-		else if (fileType === 'txt') {
-			return <div className={css.plainTxt}>{fileContent}</div>;
-		}
-		else {
-			return <CodePreview file={file} />;
-		}
-	}
-
-	return (
-		<div className={css.preview}>
-			<div className={css.title}>{fileName}</div>
-			<div className={css.content}>
-				{renderPreviewer()}
-			</div>
-			<button
-				className={css.save}
-				onClick={() => setEditFile(true)}>
-				EDIT
-			</button>
-		</div>
-	);
-}
-
-Previewer.propTypes = {
-	file: PropTypes.object,
-	setEditFile: PropTypes.func
-};
+import FilesTable from '../components/FilesTable';
+import Previewer from '../components/Previewer';
+import DataTable from '../components/DataTable';
 
 function PlaintextFilesChallenge() {
 	const [files, setFiles] = useState([]);
 	const [editFile, setEditFile] = useState(false);
+	const [dataTable, setDataTable] = useState(false);
 	const [activeFile, setActiveFile] = useState(null);
 
 	useEffect(() => {
 		const files = listFiles();
 		setFiles(files);
 	}, []);
+
+	const openDataList = () => {
+		// Disable current editing
+		if (editFile)
+			setEditFile(false);
+		setActiveFile(null);
+		setDataTable(true);
+	}
 
 	const write = updatedFile => {
 
@@ -165,7 +69,14 @@ function PlaintextFilesChallenge() {
 					setEditFile={setEditFile}
 				/>
 
-				<div style={{ flex: 1 }}></div>
+				<div style={{ flex: 1 }}>
+					<button
+						className={css.dataButton}
+						onClick={() => openDataList()}
+					>
+						Data List
+					</button>
+				</div>
 
 				<footer>
 					<div className={css.link}>
@@ -188,7 +99,12 @@ function PlaintextFilesChallenge() {
 				)}
 
 				{!activeFile && (
-					<div className={css.empty}>Select a file to view or edit</div>
+					<>
+						{!dataTable && <div className={css.empty}>Select a file to view or edit</div>}
+
+						{dataTable && <DataTable />}
+					</>
+					
 				)}
 			</main>
 		</div>
