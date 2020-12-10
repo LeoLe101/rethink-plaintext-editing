@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import css from './style.css';
-import { debounce } from 'lodash';
 import { API_ROUTES, TYPE_TO_ICON } from '../../utils/Constant';
 
 function DataTable() {
@@ -12,7 +11,7 @@ function DataTable() {
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        fetchData(`${API_ROUTES.Search}?page=${page}`);
+        fetchData(`${API_ROUTES.Data}?page=${page}`);
     }, [page]);
 
     const fetchData = async (apiRoutes) => {
@@ -25,8 +24,11 @@ function DataTable() {
         await fetch(apiRoutes, requestOpt)
             .then(res => res.json())
             .then(resJson => {
-                console.log(`Search API: ${resJson}`);
-                setData(resJson.data);
+                if (resJson.data.length >= 10)
+                    setData(resJson.data.slice(0, 9));
+                else
+                    setData(resJson.data);
+
                 setHasMore(resJson.hasMore);
                 setIsLoading(false);
             })
@@ -46,14 +48,13 @@ function DataTable() {
     }
 
     const handleOnChange = input => {
-        console.log(`Handling Search Input`, input);
         setSearchValue(input);
 
         if (searchValue && searchValue.length >= 1) {
-            // Debounce the user input to reduce server call
+            // TODO: Debounce the user input to reduce server call (Tried but unable to get the expected outcome)
             fetchData(`${API_ROUTES.Search}?searchBy=${searchBy}&searchQuery=${searchValue}`);
         }
-    }
+    };
 
     return (
         <div className={css.datas}>
@@ -61,7 +62,6 @@ function DataTable() {
             <form>
                 <input
                     placeholder="Search"
-                    value={searchValue}
                     onChange={event => handleOnChange(event.target.value)}
                 />
             </form>

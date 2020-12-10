@@ -28,6 +28,7 @@ const API_BASE = 'http://localhost:8080/api';
 const API_ROUTES = {
     Url: `${API_BASE}/url`,
     Search: `${API_BASE}/search`,
+    Data: `${API_BASE}/data`,
 }
 
 export {
