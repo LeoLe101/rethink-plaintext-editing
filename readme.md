@@ -12,3 +12,10 @@ To run the challenge:
 Once complete, please email us a link to your forked repo with clean, tested code. We will use Chrome to run it.
 
 - Rethink Engineering
+
+### Requirements
+- The project will need the server (Shorten URL) up and running before the client can use any services from __Data List__ Button
+
+### Installation
+- ```npm install```
+- ```npm run dev```

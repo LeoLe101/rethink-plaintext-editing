@@ -46,9 +46,6 @@ function DataTable() {
         await fetch(apiRoutes, requestOptions)
             .then(res => res.json())
             .then(resJson => {
-                console.log("Url suc", resJson.success);
-                console.log("Url short", resJson.url.shortenURL);
-                console.log("Url mess", resJson.message);
                 if (resJson.success)
                     setShortenedUrl(resJson.url.shortenURL);
                 else
